@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katha Shah</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="parallax" id="home">
+        <nav class="navbar">
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="header-content">
+            <h1>Katha Shah</h1>
+            <p>Engineer | Artist | Musician | Potterhead</p>
+        </div>
+        <div class="quote">
+            <p>ધોબી ની સાથે ધોબી થઈએ તો જ એને ખબર પડશે કે એ ધોબી છે</p>
+        </div>
+    </header>
+
+    <section id="about" class="glass">
+        <h2>About Me</h2>
+        <p>Uchiha who skates</p>
+        <img src="about-me.png" alt="Your photo placeholder" class="placeholder-img">
+    </section>
+
+    <section id="projects" class="glass">
+        <h2>Projects</h2>
+        <div class="project-item">
+            <h3>Paintings</h3>
+            <p>Colouring the canvas. I can't paint trees though!</p>
+            <img src="painting.png" alt="Project 1 Image" class="placeholder-img">
+        </div>
+        <div class="project-item">
+            <h3>Sketches</h3>
+            <p>Pen and paper things.</p>
+            <img src="sketching.png" alt="Project 2 Image" class="placeholder-img">
+        </div>
+        <div class="project-item">
+            <h3>Sculpting</h3>
+            <p>I make my own mugs.</p>
+            <img src="sculpting.png" alt="Project 3 Image" class="placeholder-img">
+        </div>
+        <div class="project-item">
+            <h3>Music</h3>
+            <p>I play guitar. Hear Hedwig's theme.</p>
+            <img src="guitar.png" alt="Project 4 Image" class="placeholder-img">
+        </div>
+    </section>
+
+    <section id="products" class="glass">
+        <h2>Products</h2>
+        <div class="product-item">
+            <h3>Tshirt prints</h3>
+            <p>Some of my prints</p>
+            <img src="tshirt.png" alt="Some of my prints" class="placeholder-img">
+        </div>
+        <div class="product-item">
+            <h3>Stickers</h3>
+            <p>Putting my cricut to work.</p>
+            <img src="sticker.png" alt="Sticker" class="placeholder-img">
+        </div>
+    </section>
+
+    <section id="contact" class="glass">
+        <h2>Contact</h2>
+        <p>If you'd like to get in touch, fill out the form below:</p>
+        <form id="contact-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+            
+            <button type="submit">Send Message</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>© 2024 Katha Shah. All rights reserved.</p>
+        <a href="#home" class="back-to-top">Back to Top</a>
+    </footer>
+
+    <script>
+        document.querySelector('#contact-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            alert('Thank you for your message! I will get back to you soon.');
+            this.reset();
+        });
+
+        // Smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
