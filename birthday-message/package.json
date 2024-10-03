@@ -1,0 +1,21 @@
+{
+  "name": "birthday",
+  "version": "1.0.0",
+  "description": "Birthday greetings",
+  "main": " ",
+  "scripts": {
+    "server-node": "http-server -p 4056"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kathashah/birthday-message.git"
+  },
+  "keywords": [
+    "Birthday"
+  ],
+  "author": "Katha",
+  "homepage": "https://github.com/kathashah/birthday-message#readme",
+  "dependencies": {
+    "http-server": "^0.11.1"
+  }
+}
