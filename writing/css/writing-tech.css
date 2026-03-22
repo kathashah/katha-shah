@@ -1,0 +1,192 @@
+/* ============================================================
+   writing-tech.css
+   Used only by technical essays (e.g. aem-access-control)
+   TOC sidebar · Code blocks · Callout boxes
+   ============================================================ */
+
+/* ── LAYOUT: sidebar + single column ── */
+.essay-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 0 5rem;
+  padding: 4rem 6vw 6rem;
+  align-items: start;
+  max-width: 1500px;
+}
+
+/* ── TABLE OF CONTENTS ── */
+.toc {
+  position: sticky; top: 5rem;
+  padding-right: 2rem;
+  border-right: 1px solid var(--linen-4);
+}
+.toc-label {
+  font-size: .52rem; font-weight: 600;
+  letter-spacing: .38em; text-transform: uppercase;
+  color: var(--rose); margin-bottom: 1.2rem;
+  padding-bottom: .6rem; border-bottom: 1px solid var(--linen-4);
+}
+.toc-list { list-style: none; display: flex; flex-direction: column; gap: 0 }
+.toc-item a {
+  display: flex; align-items: baseline; gap: .6rem;
+  padding: .5rem 0;
+  border-bottom: 1px solid rgba(228,221,212,.4);
+  text-decoration: none; transition: color .2s;
+}
+.toc-item a:hover .toc-title { color: var(--rose) }
+.toc-num {
+  font-family: 'DM Mono', monospace;
+  font-size: .52rem; color: var(--stone-lt);
+  flex-shrink: 0; letter-spacing: .05em;
+}
+.toc-title {
+  font-size: .72rem; font-weight: 300;
+  color: var(--stone); line-height: 1.4; transition: color .2s;
+}
+.toc-item.active .toc-title { color: var(--rose); font-weight: 500 }
+.toc-item.active .toc-num   { color: var(--rose) }
+
+/* ── LESSON BLOCK ── */
+.lesson {
+  margin-bottom: 3.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--linen-4);
+}
+.lesson:first-of-type { border-top: none; padding-top: 0 }
+.lesson-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.2rem }
+.lesson-num {
+  font-family: 'DM Mono', monospace;
+  font-size: .6rem; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--rose); flex-shrink: 0;
+}
+.lesson-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  color: var(--espresso); line-height: 1.2;
+}
+
+/* ── PROSE (single column in tech essays) ── */
+.essay-p {
+  font-size: 1rem; line-height: 1.92;
+  color: var(--bark); margin-bottom: 1rem;
+  font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 300;
+}
+.essay-p strong { font-weight: 500; color: var(--espresso) }
+.essay-p code, .ic {
+  font-family: 'DM Mono', monospace;
+  font-size: .8rem;
+  background: var(--linen-3);
+  padding: .1rem .35rem;
+  border: 1px solid var(--linen-4);
+  color: var(--espresso);
+}
+
+/* ── TL;DR BOX ── */
+.tldr {
+  background: var(--espresso);
+  border-left: 3px solid var(--rose);
+  padding: 1.8rem 2rem; margin-bottom: 3rem;
+}
+.tldr-label {
+  font-family: 'DM Mono', monospace;
+  font-size: .52rem; letter-spacing: .25em;
+  text-transform: uppercase; color: var(--rose);
+  margin-bottom: 1rem; opacity: .8;
+}
+.tldr-list { list-style: none; display: flex; flex-direction: column; gap: .7rem }
+.tldr-item {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: .9rem; font-weight: 300;
+  color: rgba(250,250,247,.8); line-height: 1.6;
+  padding-left: 1.2rem; position: relative;
+}
+.tldr-item::before { content: '→'; position: absolute; left: 0; color: var(--rose); font-size: .75rem }
+.tldr-item .ic { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.12); color: rgba(250,250,247,.9) }
+
+/* ── CALLOUT BOXES ── */
+.callout {
+  padding: 1.2rem 1.5rem; margin: 1.2rem 0;
+  border-left: 3px solid;
+  font-size: .9rem; line-height: 1.7;
+  font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 300;
+}
+.callout.warn   { border-color: var(--rose);   background: var(--rose-faint); color: var(--bark) }
+.callout.danger { border-color: #a85c5c;       background: rgba(168,92,92,.06); color: var(--bark) }
+.callout.tip    { border-color: var(--linen-4); background: var(--linen-3); color: var(--bark) }
+.callout-label {
+  font-size: .52rem; font-weight: 600;
+  letter-spacing: .3em; text-transform: uppercase;
+  margin-bottom: .5rem; color: var(--stone);
+}
+.callout.warn .callout-label   { color: var(--rose) }
+.callout.danger .callout-label { color: #a85c5c }
+
+/* ── CODE BLOCKS ── */
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  margin: 1.2rem 0; overflow: hidden;
+}
+.code-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: .55rem 1.2rem;
+  background: rgba(255,255,255,.04);
+  border-bottom: 1px solid var(--code-border);
+}
+.code-lang {
+  font-family: 'DM Mono', monospace;
+  font-size: .52rem; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--rose); opacity: .7;
+}
+.code-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: .52rem; letter-spacing: .1em;
+  text-transform: uppercase; color: rgba(250,250,247,.3);
+  cursor: none; background: none; border: none; transition: color .2s;
+}
+.code-copy:hover, .code-copy.copied { color: var(--rose) }
+pre {
+  padding: 1.4rem 1.5rem;
+  overflow-x: auto; margin: 0;
+}
+code {
+  font-family: 'DM Mono', monospace;
+  font-size: .78rem; line-height: 1.75;
+  color: rgba(250,250,247,.82); white-space: pre;
+}
+/* Syntax token colors */
+.kw   { color: #C4907A }  /* allow, deny, on, for */
+.path { color: #B8D4A8 }  /* /content/... paths */
+.priv { color: #A8C4D4 }  /* jcr:read etc */
+.rest { color: #D4C4A8 }  /* rep:glob */
+.cm   { color: rgba(250,250,247,.3); font-style: italic } /* comments */
+.str  { color: #D4A8A8 }  /* string values */
+
+/* Pull quote inside single-column tech essay */
+.pull-quote {
+  border-top: 2px solid var(--rose);
+  border-bottom: 1px solid var(--linen-4);
+  padding: 1.5rem 0; margin: 2rem 0;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  line-height: 1.45; color: var(--espresso); position: relative;
+}
+.pull-quote::before {
+  content: '"'; font-size: 3.5rem; line-height: 1;
+  color: var(--rose); opacity: .2;
+  position: absolute; top: .8rem; left: -1rem;
+  font-family: 'Playfair Display', serif;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .essay-layout { grid-template-columns: 1fr; gap: 0 }
+  .toc { position: static; border-right: none; border-bottom: 1px solid var(--linen-4); padding-right: 0; padding-bottom: 2rem; margin-bottom: 2.5rem }
+  .toc-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0 }
+}
+@media (max-width: 600px) {
+  .essay-layout { padding: 3rem 5vw 4rem }
+  .toc-list { grid-template-columns: 1fr }
+}

@@ -1,0 +1,256 @@
+/* ============================================================
+   writing-base.css
+   Shared across all pages in /writing/
+   Variables · Reset · Cursor · Nav · Footer · Reveal
+   ============================================================ */
+
+:root {
+  --linen:      #FAFAF7;
+  --linen-2:    #F4EFE8;
+  --linen-3:    #EDE8DF;
+  --linen-4:    #E4DDD4;
+  --espresso:   #110D09;
+  --bark:       #5D5645;
+  --stone:      #8C8478;
+  --stone-lt:   #B8B2AA;
+  --rose:       #C4907A;
+  --rose-faint: rgba(196,144,122,.08);
+  --code-bg:    #1A1410;
+  --code-border:#2C2018;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box }
+html { scroll-behavior:smooth }
+
+body {
+  background: var(--linen);
+  color: var(--espresso);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 300;
+  cursor: none;
+  overflow-x: hidden;
+}
+
+/* ── CURSOR ── */
+#cd {
+  position: fixed; width: 6px; height: 6px;
+  background: var(--rose); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+}
+#cr {
+  position: fixed; width: 28px; height: 28px;
+  border: 1px solid rgba(196,144,122,.4); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: width .2s, height .2s, border-color .2s;
+}
+
+/* ── READING PROGRESS BAR ── */
+#progress {
+  position: fixed; 
+  top: 0; 
+  left: 0;
+  height: 5px; 
+  background: var(--rose);
+  width: 0%; z-index: 1000;
+  transition: width .1s linear;
+}
+
+/* ── NAV ── */
+.w-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  background: var(--linen);
+  border-bottom: 1px solid var(--linen-4);
+  padding: .85rem 6vw;
+  display: flex; justify-content: space-between; align-items: center;
+  transition: background .4s;
+}
+.w-nav.scrolled {
+  background: rgba(250,250,247,.96);
+  backdrop-filter: blur(12px);
+}
+.w-nav-back {
+  font-size: .55rem; font-weight: 500;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--stone); text-decoration: none;
+  display: flex; align-items: center; gap: .5rem;
+  transition: color .2s;
+}
+.w-nav-back::before { content: '←'; font-size: .75rem }
+.w-nav-back:hover   { color: var(--rose) }
+
+.w-nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; font-weight: 700;
+  color: var(--espresso); text-decoration: none;
+  position: absolute; left: 50%; transform: translateX(-50%);
+}
+.w-nav-issue {
+  font-size: .52rem; font-weight: 400;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--stone-lt);
+}
+
+/* ── ESSAY PAGE HEADER ── */
+.essay-header {
+  padding: 8rem 6vw 0;
+  border-bottom: 3px solid var(--espresso);
+}
+.essay-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--linen-4);
+  margin-bottom: 2.5rem;
+}
+.essay-bar-pub {
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: .85rem; color: var(--stone);
+}
+.essay-bar-num {
+  font-family: 'DM Mono', monospace;
+  font-size: .55rem; letter-spacing: .2em; color: var(--stone-lt);
+}
+.essay-kicker {
+  font-size: .52rem; font-weight: 600;
+  letter-spacing: .42em; text-transform: uppercase;
+  color: var(--rose); margin-bottom: 1.2rem;
+  opacity: 0; animation: fadeUp .6s ease .2s forwards;
+}
+.essay-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(2.2rem, 5.5vw, 5rem);
+  line-height: .92; letter-spacing: -.025em;
+  color: var(--espresso); margin-bottom: 1.5rem;
+  opacity: 0; animation: fadeUp .8s ease .35s forwards;
+}
+.essay-title em { font-style: italic; color: var(--rose) }
+
+.essay-subtitle {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  color: var(--stone); line-height: 1.4; margin-bottom: 1.5rem;
+  opacity: 0; animation: fadeUp .7s ease .55s forwards;
+}
+.essay-byline {
+  display: flex; align-items: center; gap: 2rem;
+  padding: 1.2rem 0;
+  border-top: 1px solid var(--linen-4);
+  margin-top: .5rem;
+  opacity: 0; animation: fadeUp .6s ease .6s forwards;
+  flex-wrap: wrap;
+}
+.byline-author {
+  font-size: .82rem; font-weight: 400; color: var(--bark);
+  display: flex; align-items: center; gap: .6rem;
+}
+.byline-author strong { font-weight: 600; color: var(--espresso) }
+.byline-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--stone-lt) }
+.byline-date {
+  font-family: 'DM Mono', monospace;
+  font-size: .58rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--stone);
+}
+.byline-tags { display: flex; gap: .4rem; flex-wrap: wrap }
+.byline-tag {
+  font-size: .52rem; font-weight: 500;
+  letter-spacing: .15em; text-transform: uppercase;
+  color: var(--rose); padding: .18rem .5rem;
+  border: 1px solid rgba(196,144,122,.3);
+}
+.byline-read {
+  margin-left: auto;
+  font-family: 'DM Mono', monospace;
+  font-size: .52rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--stone-lt);
+}
+
+/* ── ESSAY FOOTER ── */
+.essay-footer {
+  border-top: 3px solid var(--espresso);
+  padding: 3rem 6vw;
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: 0 4rem;
+  align-items: start;
+}
+.ef-div { background: var(--linen-4) }
+.ef-label {
+  font-size: .52rem; font-weight: 600;
+  letter-spacing: .38em; text-transform: uppercase;
+  color: var(--rose); margin-bottom: 1rem;
+  padding-bottom: .6rem; border-bottom: 1px solid var(--linen-4);
+}
+.ef-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: 1rem;
+  color: var(--bark); line-height: 1.75;
+}
+.ef-name {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-style: normal; font-size: .65rem; font-weight: 500;
+  letter-spacing: .15em; text-transform: uppercase;
+  color: var(--espresso); margin-top: .8rem;
+}
+.ef-role { font-size: .6rem; color: var(--stone); margin-top: .2rem }
+.ef-link {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: .8rem 0; border-bottom: 1px solid var(--linen-4);
+  text-decoration: none; cursor: none;
+}
+.ef-link:hover .ef-link-t { color: var(--rose) }
+.ef-link-t {
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: 1rem;
+  color: var(--espresso); transition: color .2s;
+}
+.ef-link-d {
+  font-family: 'DM Mono', monospace;
+  font-size: .52rem; letter-spacing: .1em; color: var(--stone-lt);
+}
+
+/* ── SITE FOOTER ── */
+footer.w-footer {
+  background: var(--espresso);
+  padding: 1.8rem 6vw;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+.w-footer-name {
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: 1.05rem;
+  color: var(--linen); opacity: .6;
+}
+.w-footer-back {
+  font-size: .52rem; font-weight: 400;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(250,250,247,.4); text-decoration: none;
+  transition: color .2s;
+}
+.w-footer-back:hover { color: var(--rose) }
+
+/* ── SCROLL REVEAL ── */
+.rv {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.rv.vs { opacity: 1; transform: translateY(0) }
+.d1 { transition-delay: .1s }
+.d2 { transition-delay: .2s }
+.d3 { transition-delay: .3s }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px) }
+  to   { opacity: 1; transform: translateY(0) }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .essay-footer { grid-template-columns: 1fr; gap: 2.5rem }
+  .ef-div { display: none }
+}
+@media (max-width: 480px) {
+  .essay-header, .essay-footer { padding-left: 5vw; padding-right: 5vw }
+}
