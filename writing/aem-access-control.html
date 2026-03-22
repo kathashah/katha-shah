@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taming AEM Access Control — Katha Shah</title>
+<meta name="description" content="Everything I learned the hard way about restricting AEM authors to specific content areas in AEMaaCS with repoinit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/writing-base.css">
+<link rel="stylesheet" href="css/writing-tech.css">
+</head>
+<body>
+
+<div id="cd"></div>
+<div id="cr"></div>
+<div id="progress"></div>
+
+<nav class="w-nav" id="w-nav">
+  <a href="index.html" class="w-nav-back">All Writing</a>
+  <a href="../" class="w-nav-logo">KS</a>
+  <span class="w-nav-issue">Writing · No. 004</span>
+</nav>
+
+<header class="essay-header">
+  <div class="essay-bar">
+    <span class="essay-pub">Katha Shah — Writing</span>
+    <span class="essay-num">Essay No. 004 · 2025</span>
+  </div>
+  <div class="essay-kicker">AEM · AEMaaCS · Access Control · Repoinit</div>
+  <h1 class="essay-title">Taming AEM<br><em>Access Control</em></h1>
+  <p class="essay-subtitle">A developer's battle-tested guide to restricting authors to specific content areas in AEMaaCS</p>
+  <div class="essay-byline">
+    <span class="byline-author">By <strong>Katha Shah</strong><span class="byline-dot"></span>Adobe AEM Certified Developer</span>
+    <div class="byline-tags">
+      <span class="byline-tag">AEMaaCS</span>
+      <span class="byline-tag">Repoinit</span>
+      <span class="byline-tag">Oak ACL</span>
+    </div>
+    <span class="byline-read">12 min read · 9 lessons</span>
+  </div>
+</header>
+
+<div class="essay-layout">
+
+  <!-- SIDEBAR TOC -->
+  <aside class="toc" id="toc">
+    <div class="toc-label">In this guide</div>
+    <ul class="toc-list">
+      <li class="toc-item" data-lesson="tldr"><a href="#tldr"><span class="toc-num">—</span><span class="toc-title">TL;DR</span></a></li>
+      <li class="toc-item" data-lesson="l1"><a href="#l1"><span class="toc-num">01</span><span class="toc-title">The .config file format trap</span></a></li>
+      <li class="toc-item" data-lesson="l2"><a href="#l2"><span class="toc-num">02</span><span class="toc-title">Empty glob doesn't work</span></a></li>
+      <li class="toc-item" data-lesson="l3"><a href="#l3"><span class="toc-num">03</span><span class="toc-title">What actually works</span></a></li>
+      <li class="toc-item" data-lesson="l4"><a href="#l4"><span class="toc-num">04</span><span class="toc-title">The contributors inheritance problem</span></a></li>
+      <li class="toc-item" data-lesson="l5"><a href="#l5"><span class="toc-num">05</span><span class="toc-title">delete ACL misconceptions</span></a></li>
+      <li class="toc-item" data-lesson="l6"><a href="#l6"><span class="toc-num">06</span><span class="toc-title">Stale ACEs across deployments</span></a></li>
+      <li class="toc-item" data-lesson="l7"><a href="#l7"><span class="toc-num">07</span><span class="toc-title">The working pattern</span></a></li>
+      <li class="toc-item" data-lesson="l8"><a href="#l8"><span class="toc-num">08</span><span class="toc-title">IMS groups and repoinit</span></a></li>
+      <li class="toc-item" data-lesson="l9"><a href="#l9"><span class="toc-num">09</span><span class="toc-title">Verifying your ACEs</span></a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="essay-content">
+
+    <p class="essay-p">If you have ever tried to restrict an AEM author to only see and edit a specific folder in the Sites or DAM console, you have probably gone down the same rabbit hole I did. The documentation exists, the concepts are clear enough on paper, but getting it to actually work in AEMaaCS with repoinit is a different story entirely. This post documents everything I learned the hard way so you do not have to.</p>
+
+    <p class="essay-p"><strong>The goal:</strong> create author groups in AEMaaCS where each group can only see and edit their assigned content area — for example, a <span class="ic">campaign-authors</span> group that only sees <span class="ic">/content/mysite/us/en/campaigns</span> in the Sites console and <span class="ic">/content/dam/mysite/campaigns</span> in the DAM. Nothing else visible. Nothing else touchable.</p>
+
+    <p class="essay-p">Simple on paper. Weeks of debugging later, here is what actually works.</p>
+
+    <!-- TL;DR -->
+    <div class="tldr rv" id="tldr">
+      <div class="tldr-label">TL;DR — Skip to the answers</div>
+      <ul class="tldr-list">
+        <li class="tldr-item">The <span class="ic" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);color:rgba(250,250,247,.9)">.config</span> format silently drops configs with unescaped quotes — cp2fm gives no warning and the pipeline succeeds. Always escape inner double quotes as <span class="ic" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);color:rgba(250,250,247,.9)">\"</span></li>
+        <li class="tldr-item"><span class="ic" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);color:rgba(250,250,247,.9)">restriction(rep:glob,"")</span> causes a ParseException. Use non-empty path globs on a high-level ancestor instead</li>
+        <li class="tldr-item">Oak permissions are additive — users inherit from <span class="ic" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);color:rgba(250,250,247,.9)">contributors</span> and <span class="ic" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);color:rgba(250,250,247,.9)">everyone</span>. You must use explicit <span class="ic" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);color:rgba(250,250,247,.9)">deny</span> statements to override inherited access</li>
+        <li class="tldr-item">Always start your ACL block with <span class="ic" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);color:rgba(250,250,247,.9)">delete ACL for your-group</span> — stale ACEs accumulate across deployments and cause permission conflicts</li>
+        <li class="tldr-item">Jump to <a href="#l7" style="color:var(--rose)">Lesson 7</a> for the complete working repoinit pattern</li>
+      </ul>
+    </div>
+
+    <!-- LESSON 1 -->
+    <div class="lesson rv" id="l1">
+      <div class="lesson-header">
+        <span class="lesson-num">Lesson 01 of 09</span>
+        <h2 class="lesson-title">The File Format Trap — <em style="font-style:italic;color:var(--rose)">.config</em> vs <em style="font-style:italic;color:var(--rose)">.cfg.json</em></h2>
+      </div>
+
+      <p class="essay-p">Adobe recommends <span class="ic">.cfg.json</span> for OSGi configurations in AEMaaCS. For repoinit specifically, the official Sling documentation recommends <span class="ic">.config</span> because it handles multiline strings better. Both statements are true. Both will send you in circles.</p>
+
+      <p class="essay-p">Here is the real issue nobody documents: the <span class="ic">.config</span> format uses Apache Felix's own string escaping rules. If your repoinit script contains double quotes — for example in <span class="ic">restriction(rep:glob,"")</span> — those quotes must be escaped as <span class="ic">\"</span>. If you don't, the cp2fm converter silently drops the entire config file. No error. No warning. The pipeline succeeds. Your ACEs just never get applied.</p>
+
+      <div class="callout danger">
+        <div class="callout-label">Silent failure</div>
+        cp2fm drops malformed <span class="ic">.config</span> files without any error output. The CI/CD pipeline reports success. You will have no idea your repoinit never ran unless you actively verify.
+      </div>
+
+      <p class="essay-p">The way to catch this is to unzip the cp2fm converted package and grep for your config:</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="cm"># Build and check if your config made it into the feature model</span>
+mvn clean install -pl all -am
+grep <span class="str">"your-config-name"</span> ./all/target/cp-conversion/fm.out/aem-project.all-author.json</code></pre>
+      </div>
+
+      <p class="essay-p">If your config does not appear in the feature model JSON, cp2fm dropped it. This is the first thing to check when your repoinit runs but nothing happens.</p>
+
+      <div class="callout tip">
+        <div class="callout-label">The fix</div>
+        Escape all inner double quotes in your <span class="ic">.config</span> file using <span class="ic">\"</span>. Every single one. No exceptions.
+      </div>
+    </div>
+
+    <!-- LESSON 2 -->
+    <div class="lesson rv" id="l2">
+      <div class="lesson-header">
+        <span class="lesson-num">Lesson 02 of 09</span>
+        <h2 class="lesson-title"><span class="ic" style="font-size:inherit;background:var(--linen-3);border-color:var(--linen-4)">restriction(rep:glob,"")</span> Does Not Work in Repoinit</h2>
+      </div>
+
+      <p class="essay-p">Every AEM blog and Stack Overflow answer about restricting traversal to a single node tells you to use <span class="ic">rep:glob=""</span> — an empty string glob that matches only the node itself, not its children. In theory this is correct. In practice, the repoinit parser throws a ParseException when it encounters an empty string value.</p>
+
+      <p class="essay-p">I tried every variation:</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">repoinit</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="cm"># All of these fail in different ways</span>
+<span class="kw">restriction</span>(<span class="rest">rep:glob</span>,<span class="str">""</span>)   <span class="cm"># ParseException</span>
+<span class="kw">restriction</span>(<span class="rest">rep:glob</span>,)     <span class="cm"># ParseException</span>
+<span class="kw">restriction</span>(<span class="rest">rep:glob</span>,<span class="str">''</span>)   <span class="cm"># Lexical error</span>
+<span class="kw">restriction</span>(<span class="rest">rep:glob</span>)      <span class="cm"># Accepted BUT restriction is silently dropped</span></code></pre>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-label">The dangerous one</div>
+        <span class="ic">restriction(rep:glob)</span> with no value is the most dangerous. The parser accepts it, no error is thrown, the ACE is written — but the restriction is silently dropped. Your traversal-only entry becomes a full subtree read. You will not know until you test with a real user.
+      </div>
+
+      <p class="essay-p">The official Sling parser test cases show <span class="ic">restriction(rep:glob)</span> as valid syntax. It is valid for the parser. The JCR repoinit module that writes to Oak simply does not store it correctly. This is a known gap between what the parser accepts and what the runtime supports.</p>
+    </div>
+
+    <!-- LESSON 3 -->
+    <div class="lesson rv" id="l3">
+      <div class="lesson-header">
+        <span class="lesson-num">Lesson 03 of 09</span>
+        <h2 class="lesson-title">What Actually Works for Traversal Restriction</h2>
+      </div>
+
+      <p class="essay-p">Instead of fighting the empty glob, use a non-empty path glob that precisely targets only your content area. Set the ACE on a high-level ancestor node with a glob that resolves to only your target path:</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">repoinit</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="cm"># Two ACEs on /content replace eight individual traversal entries</span>
+<span class="kw">allow</span> <span class="priv">jcr:read</span> <span class="kw">on</span> <span class="path">/content</span> <span class="kw">restriction</span>(<span class="rest">rep:glob</span>,<span class="str">/mysite/us/en/campaigns</span>)
+<span class="kw">allow</span> <span class="priv">jcr:read</span> <span class="kw">on</span> <span class="path">/content</span> <span class="kw">restriction</span>(<span class="rest">rep:glob</span>,<span class="str">/mysite/us/en/campaigns/*</span>)</code></pre>
+      </div>
+
+      <p class="essay-p">For node <span class="ic">/content</span>, the glob <span class="ic">/mysite/us/en/campaigns</span> matches exactly <span class="ic">/content/mysite/us/en/campaigns</span> and all descendants when combined with the wildcard entry. Sibling paths like <span class="ic">/content/mysite/us/en/blog</span> or <span class="ic">/content/mysite/us/en/products</span> do not match and remain invisible.</p>
+
+      <div class="callout tip">
+        <div class="callout-label">Why this is better</div>
+        This approach replaces the need for multiple traversal entries on every ancestor node. Two ACEs on <span class="ic">/content</span> replace eight individual traversal entries up the tree. Cleaner, more maintainable, and it actually works.
+      </div>
+    </div>
+
+    <!-- LESSON 4 -->
+    <div class="lesson rv" id="l4">
+      <div class="lesson-header">
+        <span class="lesson-num">Lesson 04 of 09</span>
+        <h2 class="lesson-title">The Contributors and Everyone Inheritance Problem</h2>
+      </div>
+
+      <p class="essay-p">Even with perfectly scoped ACEs on your custom group, your users will still see everything. This one stumped me for a long time.</p>
+
+      <p class="essay-p">Here is why: every user created in AEM is automatically added to the <span class="ic">contributors</span> and <span class="ic">everyone</span> groups. These groups — along with <span class="ic">content-authors</span> — may have broad <span class="ic">jcr:read</span> on <span class="ic">/content</span> that cascades down to every child node. Your carefully crafted glob restrictions on your custom group are irrelevant because the user inherits unrestricted read from these other groups.</p>
+
+      <blockquote class="pull-quote">Oak permission evaluation is strictly additive. If ANY group in the user's membership chain has allow jcr:read on a node, the user can read that node. There is no narrowing without explicit denies.
+      </blockquote>
+
+      <p class="essay-p">The only reliable fix is to add explicit <span class="ic">deny jcr:read</span> statements on your custom group to override the inherited read:</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">repoinit</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="cm"># Grant broad read for navigation, then deny siblings, then allow back target</span>
+<span class="kw">allow</span> <span class="priv">jcr:read</span> <span class="kw">on</span> <span class="path">/content</span>
+<span class="kw">deny</span> <span class="priv">jcr:versionManagement</span>,<span class="priv">crx:replicate</span>,<span class="priv">rep:write</span>,<span class="priv">jcr:lockManagement</span>,
+     <span class="priv">jcr:removeChildNodes</span>,<span class="priv">jcr:removeNode</span>,<span class="priv">jcr:addChildNodes</span>,
+     <span class="priv">jcr:nodeTypeManagement</span> <span class="kw">on</span> <span class="path">/content</span>
+<span class="kw">deny</span> <span class="priv">jcr:read</span> <span class="kw">on</span> <span class="path">/content/mysite/us/en</span> <span class="kw">restriction</span>(<span class="rest">rep:glob</span>,<span class="str">/*</span>)
+<span class="kw">allow</span> <span class="priv">jcr:read</span> <span class="kw">on</span> <span class="path">/content/mysite/us/en</span> <span class="kw">restriction</span>(<span class="rest">rep:glob</span>,<span class="str">/campaigns</span>)
+<span class="kw">allow</span> <span class="priv">jcr:read</span> <span class="kw">on</span> <span class="path">/content/mysite/us/en</span> <span class="kw">restriction</span>(<span class="rest">rep:glob</span>,<span class="str">/campaigns/*</span>)</code></pre>
+      </div>
+
+      <p class="essay-p">The <span class="ic">deny jcr:read on /content/mysite/us/en restriction(rep:glob,/*)</span> line blocks read on ALL direct children of <span class="ic">/en</span>. The subsequent allow statements grant back only the specific folders you want visible. A deny on a more specific group overrides an allow inherited from a parent group in Oak's evaluation model.</p>
+    </div>
+
+    <!-- LESSON 5 -->
+    <div class="lesson rv" id="l5">
+      <div class="lesson-header">
+        <span class="lesson-num">Lesson 05 of 09</span>
+        <h2 class="lesson-title"><span class="ic" style="font-size:inherit;background:var(--linen-3);border-color:var(--linen-4)">delete ACL</span> Does Not Remove Inherited Permissions</h2>
+      </div>
+
+      <p class="essay-p">The repoinit <span class="ic">delete ACL for my-group</span> statement is useful but widely misunderstood. It removes only the ACEs where <span class="ic">my-group</span> is the explicit principal. It does not remove <span class="ic">my-group</span> from any parent groups, remove ACEs belonging to those parent groups, or block permissions flowing down through group inheritance.</p>
+
+      <p class="essay-p">If <span class="ic">campaign-authors</span> is a member of <span class="ic">content-authors</span>, and <span class="ic">content-authors</span> has <span class="ic">allow jcr:read on /content</span>, deleting the ACL for <span class="ic">campaign-authors</span> does nothing to stop that inherited read. The user still gets it.</p>
+
+      <div class="callout warn">
+        <div class="callout-label">Important</div>
+        You cannot clean up inherited permissions through <span class="ic">delete ACL</span> — you can only override them with explicit denies on your group. This is why the deny-based approach in Lesson 4 is necessary.
+      </div>
+    </div>
+
+    <!-- LESSON 6 -->
+    <div class="lesson rv" id="l6">
+      <div class="lesson-header">
+        <span class="lesson-num">Lesson 06 of 09</span>
+        <h2 class="lesson-title">Stale ACEs Persist Across Deployments</h2>
+      </div>
+
+      <p class="essay-p">Repoinit scripts are idempotent for node creation but additive for ACEs. If you deploy a script, then change the ACEs and deploy again, the old ACEs remain in the repository alongside the new ones. This causes permission conflicts that are very hard to debug because you can't easily see the full accumulated state.</p>
+
+      <div class="callout tip">
+        <div class="callout-label">The fix</div>
+        Always include <span class="ic">delete ACL for my-group</span> at the start of your ACL block. This cleans up the group's own explicit ACEs before re-applying. Combined with versioned file names for the OSGi config, you get a clean apply on every deployment.
+      </div>
+
+      <p class="essay-p">Remember from Lesson 5: <span class="ic">delete ACL</span> only cleans explicit ACEs. Inherited ones remain. Plan your ACL strategy around this from the start — trying to retrofit it later is painful.</p>
+    </div>
+
+    <!-- LESSON 7 -->
+    <div class="lesson rv" id="l7">
+      <div class="lesson-header">
+        <span class="lesson-num">Lesson 07 of 09</span>
+        <h2 class="lesson-title">The Working Pattern</h2>
+      </div>
+
+      <p class="essay-p">After all of the above, here is the complete repoinit pattern that reliably works in AEMaaCS. The structure is consistent throughout: broad read for navigation, deny all writes on <span class="ic">/content</span>, deny read on siblings at each level, allow back only the specific paths, grant full access only on the actual target folder.</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">repoinit — complete working pattern</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="cm"># Create group and add to necessary parent groups</span>
+create group <span class="str">campaign-authors</span> with path <span class="path">/home/groups/mysite</span>
+add <span class="str">campaign-authors</span> to group <span class="str">content-authors</span>
+add <span class="str">campaign-authors</span> to group <span class="str">workflow-users</span>
+
+<span class="cm"># Always clean stale ACEs first</span>
+delete ACL for <span class="str">campaign-authors</span>
+
+set ACL for <span class="str">campaign-authors</span>
+  <span class="cm"># Broad read for console navigation</span>
+  <span class="kw">allow</span> <span class="priv">jcr:read</span> <span class="kw">on</span> <span class="path">/content</span>
+
+  <span class="cm"># Deny all write operations across /content</span>
+  <span class="kw">deny</span> <span class="priv">jcr:versionManagement</span>,<span class="priv">crx:replicate</span>,<span class="priv">rep:write</span>,<span class="priv">jcr:lockManagement</span>,
+       <span class="priv">jcr:removeChildNodes</span>,<span class="priv">jcr:removeNode</span>,<span class="priv">jcr:addChildNodes</span>,
+       <span class="priv">jcr:nodeTypeManagement</span> <span class="kw">on</span> <span class="path">/content</span>
+
+  <span class="cm"># Block sibling folders, allow only campaigns</span>
+  <span class="kw">deny</span> <span class="priv">jcr:read</span> <span class="kw">on</span> <span class="path">/content/mysite/us/en</span> <span class="kw">restriction</span>(<span class="rest">rep:glob</span>,<span class="str">/*</span>)
+  <span class="kw">allow</span> <span class="priv">jcr:read</span> <span class="kw">on</span> <span class="path">/content/mysite/us/en</span> <span class="kw">restriction</span>(<span class="rest">rep:glob</span>,<span class="str">/campaigns</span>)
+  <span class="kw">allow</span> <span class="priv">jcr:read</span> <span class="kw">on</span> <span class="path">/content/mysite/us/en</span> <span class="kw">restriction</span>(<span class="rest">rep:glob</span>,<span class="str">/campaigns/*</span>)
+
+  <span class="cm"># Within campaigns, restrict to specific sub-folder</span>
+  <span class="kw">deny</span> <span class="priv">jcr:read</span> <span class="kw">on</span> <span class="path">/content/mysite/us/en/campaigns</span> <span class="kw">restriction</span>(<span class="rest">rep:glob</span>,<span class="str">/*</span>)
+  <span class="kw">allow</span> <span class="priv">jcr:read</span> <span class="kw">on</span> <span class="path">/content/mysite/us/en/campaigns</span> <span class="kw">restriction</span>(<span class="rest">rep:glob</span>,<span class="str">/summer-2024</span>)
+  <span class="kw">allow</span> <span class="priv">jcr:read</span> <span class="kw">on</span> <span class="path">/content/mysite/us/en/campaigns</span> <span class="kw">restriction</span>(<span class="rest">rep:glob</span>,<span class="str">/summer-2024/*</span>)
+  <span class="kw">allow</span> <span class="priv">jcr:all</span> <span class="kw">on</span> <span class="path">/content/mysite/us/en/campaigns/summer-2024</span>
+
+  <span class="cm"># DAM — same pattern</span>
+  <span class="kw">deny</span> <span class="priv">jcr:read</span> <span class="kw">on</span> <span class="path">/content/dam/mysite</span> <span class="kw">restriction</span>(<span class="rest">rep:glob</span>,<span class="str">/*</span>)
+  <span class="kw">allow</span> <span class="priv">jcr:read</span> <span class="kw">on</span> <span class="path">/content/dam/mysite</span> <span class="kw">restriction</span>(<span class="rest">rep:glob</span>,<span class="str">/campaigns</span>)
+  <span class="kw">allow</span> <span class="priv">jcr:read</span> <span class="kw">on</span> <span class="path">/content/dam/mysite</span> <span class="kw">restriction</span>(<span class="rest">rep:glob</span>,<span class="str">/campaigns/*</span>)
+  <span class="kw">allow</span> <span class="priv">jcr:all</span> <span class="kw">on</span> <span class="path">/content/dam/mysite/campaigns</span>
+
+  <span class="cm"># Supporting paths</span>
+  <span class="kw">allow</span> <span class="priv">jcr:read</span> <span class="kw">on</span> <span class="path">/conf/mysite</span>
+  <span class="kw">allow</span> <span class="priv">jcr:read</span> <span class="kw">on</span> <span class="path">/etc/replication</span>
+  <span class="kw">allow</span> <span class="priv">jcr:read</span> <span class="kw">on</span> <span class="path">/etc/replication/agents.author</span>
+end</code></pre>
+      </div>
+    </div>
+
+    <!-- LESSON 8 -->
+    <div class="lesson rv" id="l8">
+      <div class="lesson-header">
+        <span class="lesson-num">Lesson 08 of 09</span>
+        <h2 class="lesson-title">IMS Groups and Repoinit</h2>
+      </div>
+
+      <p class="essay-p">In AEMaaCS, user identities come from Adobe IMS via the Admin Console. Users are assigned to IMS user groups in the Admin Console, and those groups sync into AEM on first login. The synced groups appear in AEM under <span class="ic">/home/groups</span> with a <span class="ic">rep:externalId</span> property containing the IMS identifier.</p>
+
+      <p class="essay-p">The correct pattern is to make your IMS group a member of your repoinit group — not the other way around:</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">repoinit</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="cm"># IMS group becomes member of repoinit group</span>
+<span class="cm"># Identity managed in Admin Console. Permissions managed in repoinit.</span>
+add <span class="str">My Campaign Authors IMS</span> to group <span class="str">campaign-authors</span></code></pre>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-label">Timing caveat</div>
+        This repoinit statement will fail if the IMS group does not yet exist in AEM. The group only gets created in AEM after the first user from that IMS group logs in. On a brand new environment, either skip this statement on initial setup or ensure at least one IMS user logs in before the repoinit script runs.
+      </div>
+    </div>
+
+    <!-- LESSON 9 -->
+    <div class="lesson rv" id="l9">
+      <div class="lesson-header">
+        <span class="lesson-num">Lesson 09 of 09</span>
+        <h2 class="lesson-title">Verifying Your ACEs Actually Got Applied</h2>
+      </div>
+
+      <p class="essay-p">The AEM Permissions UI does not show restriction values clearly. The querybuilder API returns ACE nodes but does not include <span class="ic">rep:restrictions</span> child node properties by default. The most reliable verification is to navigate directly to the ACE node in CRXDE:</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">crxde path</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="cm"># The rep:glob property here shows the exact value stored in Oak</span>
+<span class="path">/content/rep:policy/allowXX/rep:restrictions</span></code></pre>
+      </div>
+
+      <p class="essay-p">If the restrictions node does not exist, your glob restriction was not stored. Also verify using the querybuilder to see all ACEs for your group:</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">querybuilder url</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code>/bin/querybuilder.json?type=rep:ACE
+  &property=rep:principalName
+  &property.value=campaign-authors
+  &p.limit=-1
+  &p.hits=full</code></pre>
+      </div>
+
+      <p class="essay-p">And always test with an actual user in an incognito window. The Sites console can sometimes appear to show pages due to admin session caching. A real user test with a <span class="ic">.json</span> endpoint call confirms actual permission state:</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">verification</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="cm"># Test as a real user — not admin</span>
+<span class="path">/content/mysite/us/en/blog.json</span>
+
+<span class="cm"># Expected responses:</span>
+<span class="cm"># 403 → correctly blocked ✓</span>
+<span class="cm"># 200 → user genuinely has access (check your ACEs)</span></code></pre>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-label">Summary</div>
+        Getting AEM author restrictions right in AEMaaCS requires understanding several non-obvious behaviours: cp2fm silently drops malformed configs, the repoinit parser does not support empty glob strings, Oak permissions are additive across group membership, and stale ACEs accumulate without explicit cleanup. Once you understand the model, it is consistent and maintainable. Getting there just takes longer than it should.
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer class="essay-footer">
+  <div class="rv">
+    <div class="ef-label">About the author</div>
+    <p class="ef-text">Katha is an Adobe AEM Certified Developer and Senior Software Engineer at Druva, where she architects marketing web systems at scale. She writes about what she's had to figure out the hard way.</p>
+    <div class="ef-name">Katha Shah</div>
+    <div class="ef-role">Adobe AEM Certified · Senior Software Engineer · Druva Inc.</div>
+  </div>
+  <div class="ef-div"></div>
+  <div class="rv d1">
+    <div class="ef-label">More writing</div>
+    <a href="landing-the-moon.html" class="ef-link"><span class="ef-link-t">Landing the Moon: Interning at ISRO</span><span class="ef-link-d">Sep 2023</span></a>
+    <a href="deep-learning-accessibility.html" class="ef-link"><span class="ef-link-t">Deep Learning Meets Accessibility</span><span class="ef-link-d">Mar 2025</span></a>
+    <a href="fast-fashion-identity.html" class="ef-link"><span class="ef-link-t">The Full Wardrobe, The Empty Self</span><span class="ef-link-d">2025</span></a>
+  </div>
+</footer>
+
+<footer class="w-footer">
+  <span class="w-footer-name">Katha Shah</span>
+  <a href="index.html" class="w-footer-back">← All Writing</a>
+</footer>
+
+<script src="js/writing-base.js"></script>
+<script src="js/writing-tech.js"></script>
+</body>
+</html>

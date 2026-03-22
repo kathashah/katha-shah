@@ -1,112 +1,587 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Katha Shah</title>
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Katha Shah — Senior Software Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;1,200;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/portfolio-main.css">
+  <link rel="stylesheet" href="css/portfolio-writing.css">
 </head>
 <body>
-    <header class="parallax" id="home">
-        <nav class="navbar">
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#products">Products</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-        <div class="header-content">
-            <h1>Katha Shah</h1>
-            <p>Engineer | Artist | Musician | Potterhead</p>
-        </div>
-        <div class="quote">
-            <p>ધોબી ની સાથે ધોબી થઈએ તો જ એને ખબર પડશે કે એ ધોબી છે</p>
-        </div>
-    </header>
 
-    <section id="about" class="glass">
-        <h2>About Me</h2>
-        <p>Uchiha who skates</p>
-        <img src="about-me.png" alt="Your photo placeholder" class="placeholder-img">
-    </section>
+<div id="cd"></div>
+<div id="cr"></div>
 
-    <section id="projects" class="glass">
-        <h2>Projects</h2>
-        <div class="project-item">
-            <h3>Paintings</h3>
-            <p>Colouring the canvas. I can't paint trees though!</p>
-            <img src="painting.png" alt="Project 1 Image" class="placeholder-img">
-        </div>
-        <div class="project-item">
-            <h3>Sketches</h3>
-            <p>Pen and paper things.</p>
-            <img src="sketching.png" alt="Project 2 Image" class="placeholder-img">
-        </div>
-        <div class="project-item">
-            <h3>Sculpting</h3>
-            <p>I make my own mugs.</p>
-            <img src="sculpting.png" alt="Project 3 Image" class="placeholder-img">
-        </div>
-        <div class="project-item">
-            <h3>Music</h3>
-            <p>I play guitar. Hear Hedwig's theme.</p>
-            <img src="guitar.png" alt="Project 4 Image" class="placeholder-img">
-        </div>
-    </section>
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <span class="nav-tag">Katha Shah · Portfolio</span>
+  <a href="#hero" class="nav-logo">KS</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#expertise">Expertise</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#writing">Writing</a></li>
+    <!-- <li><a href="gallery/index.html">Gallery</a></li> -->
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-ham" id="navham" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
 
-    <section id="products" class="glass">
-        <h2>Products</h2>
-        <div class="product-item">
-            <h3>Tshirt prints</h3>
-            <p>Some of my prints</p>
-            <img src="tshirt.png" alt="Some of my prints" class="placeholder-img">
+<div id="mnav">
+  <a href="#about">About</a>
+  <a href="#expertise">Expertise</a>
+  <a href="#experience">Experience</a>
+  <a href="#education">Education</a>
+  <a href="#projects">Projects</a>
+  <a href="#writing">Writing</a>
+  <!-- <a href="gallery/index.html">Gallery</a> -->
+  <a href="#contact">Contact</a>
+</div>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+
+  <!-- LEFT — Name first, Engineer's Letter as byline -->
+  <div class="hero-left" id="heroLeft">
+    <div class="hero-bg-word hero-bg-w1" id="bgw1">Curious</div>
+    <div class="hero-bg-word hero-bg-w2" id="bgw2">Precise</div>
+    <div class="hero-bg-word hero-bg-w3" id="bgw3">Creative</div>
+    <div class="hero-terra-line"></div>
+
+    <div class="hero-top-label">Software Engineer · Digital Architect · 2026</div>
+
+    <div class="hero-letter-head">
+      <div class="hero-el-byline">Engineer's Letter by <em>Katha Shah</em></div>
+      <div class="hero-el-title">
+        <span class="firstname">KATHA</span>
+        <span class="lastname">Shah</span>
+      </div>
+      <div class="hero-el-sub-label">Engineer's Letter — Vol. I</div>
+      <div class="hero-name-rule"></div>
+      <div class="hero-name-sub">Senior Software Engineer · Los Angeles / Bay Area, CA</div>
+    </div>
+  </div>
+
+  <!-- RIGHT — pull quote + intro -->
+  <div class="hero-right">
+    <div class="hero-terra-dot"></div>
+    <div class="hero-pull" id="heroPull">
+      I build right,<br>for the right reasons,<br><em style="font-style:italic;color:var(--rose)">every time.</em>
+    </div>
+    <div class="hero-intro">
+      <div><p>I'm a Senior Software Engineer with a rare breadth — full-stack technical depth, deep learning research, and product-level thinking.<br/> MS Computer Science, USC.</p></div>
+      <div><p>From training sign language AI at USC to shipping scalable web at Druva and building systems at ISRO — I move between disciplines with precision and care.</p></div>
+    </div>
+  </div>
+
+  <div class="hero-footer">
+    <span class="hero-footer-label">Katha Shah · Senior Software Engineer</span>
+    <span class="hero-page-num">1 / 9</span>
+    <span class="hero-footer-label">Portfolio · 2026</span>
+  </div>
+</section>
+
+<!-- ══ ABOUT ══ -->
+<section id="about" class="section" data-parallax="0.04">
+  <div class="mag-header">
+    <span class="mag-sname">About</span>
+    <span class="mag-pnum">2 / 9</span>
+  </div>
+  <div class="deco-letter" data-parallax="0.06">A</div>
+
+  <div class="section-heading rv">
+    <span class="sub">In my own words</span>
+    The Engineer<br>Behind the Code
+  </div>
+
+  <div class="about-grid">
+    <div class="rv">
+      <p class="about-pull-big">"I build at the intersection of <em>craft</em> and <em>impact.</em>"</p>
+      <div class="about-body">
+        <p>I'm Katha — a Senior Software Engineer who genuinely loves the work. I hold an MS in Computer Science from USC and I've spent my career moving between machine learning research and production-grade web engineering, finding that the two are more connected than people think.</p>
+        <p>I trained the first end-to-end American Sign Language Production model at USC, shipped scalable marketing systems at Druva that serve millions of visitors, and built secure intranet tools for remote sensing operations at the Indian Space Research Organisation. Each role taught me something different about what it means to build things people depend on.</p>
+        <p>My work is guided by a simple standard: technically sound, ethically grounded, and never shipped until it's truly complete. I don't optimize for done — I optimize for right.</p>
+      </div>
+    </div>
+    <div class="about-div"></div>
+    <div class="rv d1">
+      <div class="about-interests-label">Beyond the screen</div>
+      <ul class="interest-list">
+        <li>Sketching &amp; painting — acrylics, pencil art, Mandala, Procreate</li>
+        <li>Classical &amp; freestyle dance</li>
+        <li>Hiking &amp; being in nature</li>
+        <li>DIY projects &amp; home decorating</li>
+        <li>Organizing everything (yes, everything)</li>
+        <li>Mystery &amp; fiction — always mid-book</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SKILLS ══ -->
+<section id="expertise" class="section alt">
+  <div class="mag-header"><span class="mag-sname">Expertise</span><span class="mag-pnum">3 / 9</span></div>
+  <div class="section-heading rv"><span class="sub">What I work with</span>The Full<br>Stack</div>
+
+  <!-- Hero featured cards -->
+  <div class="skills-featured rv">
+    <div class="sf-card" data-sf>
+      <div class="sf-tag">Primary</div>
+      <div class="sf-name">Python</div>
+      <div class="sf-desc">ML research, backend systems, data pipelines — my primary language for over 5 years.</div>
+    </div>
+    <div class="sf-card" data-sf>
+      <div class="sf-tag">Primary</div>
+      <div class="sf-name">React</div>
+      <div class="sf-desc">Component architecture and high-traffic marketing web — shipped daily at Druva.</div>
+    </div>
+    <div class="sf-card" data-sf>
+      <div class="sf-tag">Certified</div>
+      <div class="sf-name">Adobe AEM</div>
+      <div class="sf-desc">Adobe certified developer. CMS architecture, component development, content workflows.</div>
+    </div>
+    <div class="sf-card" data-sf>
+      <div class="sf-tag">Research</div>
+      <div class="sf-name">PyTorch</div>
+      <div class="sf-desc">Deep learning and neural networks — used to build the first end-to-end ASL production model.</div>
+    </div>
+  </div>
+
+  <!-- Full skill grid -->
+  <div class="skills-cols">
+    <div class="skill-col rv">
+      <div class="skill-col-label">Languages</div>
+      <ul class="skill-list">
+        <li>Python</li><li>JavaScript</li><li>Java</li>
+        <li>C / C++</li><li>PHP</li><li>Java EE / JSP</li>
+      </ul>
+    </div>
+    <div class="skill-col rv d1">
+      <div class="skill-col-label">Architecture &amp; Leadership</div>
+      <ul class="skill-list">
+        <li>System Design</li><li>API Design &amp; Integration</li>
+        <li>Enterprise CMS Architecture</li><li>Performance Engineering</li>
+        <li>SEO Infrastructure</li><li>Team &amp; Budget Ownership</li>
+      </ul>
+    </div>
+    <div class="skill-col rv d2">
+      <div class="skill-col-label">AI &amp; Machine Learning</div>
+      <ul class="skill-list">
+        <li>Deep Learning &amp; Neural Nets</li><li>LLM Integration &amp; Agents</li>
+        <li>Agentic System Design</li><li>ML Pipeline Architecture</li>
+        <li>RAG &amp; Vector Systems</li><li>PyTorch / Keras / TF</li>
+      </ul>
+    </div>
+    <div class="skill-col rv d3">
+      <div class="skill-col-label">Platforms &amp; Delivery</div>
+      <ul class="skill-list">
+        <li>Adobe AEM (Certified)</li><li>Cloud — GCP / Azure</li>
+        <li>WordPress / Drupal</li><li>MySQL / Oracle</li>
+        <li>Figma / Sketch</li><li>Web-to-Pipeline Optimization</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══ EXPERIENCE ══ -->
+<section id="experience" class="section">
+  <div class="mag-header"><span class="mag-sname">Experience</span><span class="mag-pnum">4 / 9</span></div>
+  <div class="deco-letter" data-parallax="0.05">E</div>
+  <div class="section-heading rv"><span class="sub">Where I've built things</span>My Work<br>History</div>
+
+  <div class="exp-list">
+    <div class="exp-item rv">
+      <div class="exp-meta">
+        <div class="exp-company">Druva Inc.</div>
+        <div class="exp-period">June 2021 — Present</div>
+        <div class="exp-location">Santa Clara, CA</div>
+      </div>
+      <div class="exp-div"></div>
+      <div>
+        <div class="exp-role">Senior Software Developer</div>
+        <p class="exp-desc">I own the technical development and delivery of Druva's marketing web ecosystem — driving SEO strategy, performance engineering, and user experience at scale across high-traffic properties.</p>
+        <ul class="exp-bullets">
+          <li>Architected and executed a full site restructure — redesigning URL taxonomy, navigation system, and implementing large-scale redirect infrastructure across the entire marketing domain</li>
+          <li>Own end-to-end SEO strategy and technical implementation across all marketing systems, driving organic channel performance and web-to-pipeline attribution</li>
+          <li>Deliver production-grade, modular frontend code for high-traffic marketing properties with a focus on performance, accessibility, and scalability</li>
+          <li>Analyse web channel performance via Salesforce pipeline data to identify growth opportunities and inform demand generation strategy</li>
+          <li>Stepped up to lead the web team — owning headcount decisions, FY budget planning, and cross-functional delivery</li>
+          <li><span class="metric">Druva All Stars Award — 5x recipient, FY22-FY26</span></li>
+          <li><span class="metric">Stevie Award — 2x Gold, 1x Bronze — Website Navigation, UX &amp; Digital Experience</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item rv">
+      <div class="exp-meta">
+        <div class="exp-company">Druva Inc.</div>
+        <div class="exp-period">Feb 2021 — May 2021</div>
+        <div class="exp-location">Sunnyvale, CA</div>
+      </div>
+      <div class="exp-div"></div>
+      <div>
+        <div class="exp-role">Software Developer Intern</div>
+        <p class="exp-desc">I built functional, modular and responsive code for the Druva marketing website — and shipped a feature that moved the needle in my first sprint.</p>
+        <ul class="exp-bullets">
+          <li>Integrated a recommendation tool based on web traffic and user journey — drove <span class="metric">18% more user engagement</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item rv">
+      <div class="exp-meta">
+        <div class="exp-company">Parallel Agile Co.</div>
+        <div class="exp-period">May 2020 — Jul 2020</div>
+        <div class="exp-location">Remote</div>
+      </div>
+      <div class="exp-div"></div>
+      <div>
+        <div class="exp-role">Directed Research — Tikiman Go</div>
+        <p class="exp-desc">I developed AR-based features for Tikiman Go, a Hawaiian-themed AR/VR game — my first real foray into game development and spatial computing.</p>
+        <ul class="exp-bullets">
+          <li>Designed and built battle scene features and a Halloween seasonal pack in Unity3D</li>
+          <li>Deployed and tested multiple Android builds across device targets</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item rv">
+      <div class="exp-meta">
+        <div class="exp-company">ISRO</div>
+        <div class="exp-period">Jan 2019 — May 2019</div>
+        <div class="exp-location">India</div>
+      </div>
+      <div class="exp-div"></div>
+      <div>
+        <div class="exp-role">Research Intern</div>
+        <p class="exp-desc">I worked as part of the team developing electro-optical payloads for Earth and planetary observations — an experience that fundamentally shaped how I think about reliability in software.</p>
+        <ul class="exp-bullets">
+          <li>Built a secure resource reallocation and distribution portal (intranet) for the remote sensing division</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ EDUCATION ══ -->
+<section id="education" class="section alt">
+  <div class="mag-header"><span class="mag-sname">Education</span><span class="mag-pnum">5 / 9</span></div>
+  <div class="section-heading rv"><span class="sub">My academic foundations</span>Where I<br>Learned</div>
+  <div class="edu-grid">
+    <div class="edu-card rv">
+      <div class="edu-degree">Master of Science,<br>Computer Science</div>
+      <div class="edu-school">University of Southern California</div>
+      <div class="edu-detail">Los Angeles, CA · May 2021 · GPA 3.44 / 4.0</div>
+      <div class="edu-courses">
+        <span class="edu-course">Analysis of Algorithms</span>
+        <span class="edu-course">Deep Learning</span>
+        <span class="edu-course">Affective Computing</span>
+        <span class="edu-course">Database Systems</span>
+        <span class="edu-course">Mobile Social Games</span>
+        <span class="edu-course">Web Technologies</span>
+      </div>
+    </div>
+    <div class="edu-card rv d1">
+      <div class="edu-degree">Bachelor of Engineering,<br>Computer Science</div>
+      <div class="edu-school">LDRP Institute — KSV University</div>
+      <div class="edu-detail">India · May 2019 · GPA 8.9 / 10 · Top 1% of class</div>
+      <div class="edu-courses">
+        <span class="edu-course">OOP</span>
+        <span class="edu-course">Artificial Intelligence</span>
+        <span class="edu-course">Compiler Design</span>
+        <span class="edu-course">Android Development</span>
+        <span class="edu-course">Networking &amp; Data Comm.</span>
+        <span class="edu-course">Computer Graphics</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ RECOGNITION ══ -->
+<section id="certs" class="section">
+  <div class="mag-header"><span class="mag-sname">Recognition</span><span class="mag-pnum">6 / 9</span></div>
+  <div class="section-heading rv"><span class="sub">What the work earned</span>Earned,<br>Not Given</div>
+
+  <!-- Top: Stevie featured + sidebar -->
+  <div class="rec-top rv">
+    <div class="rec-featured">
+      <div class="rec-eyebrow">Industry Recognition</div>
+      <div class="rec-featured-title">Stevie<br>Award</div>
+      <div class="rec-featured-detail">Website Navigation, UX &amp; Digital Experience · American Business Awards · Druva Web Team</div>
+      <div class="rec-medals">
+        <span class="rec-medal gold">2x Gold</span>
+        <span class="rec-medal bronze">1x Bronze</span>
+      </div>
+    </div>
+    <div class="rec-side">
+      <div class="rec-side-item">
+        <div class="rec-side-name">Druva All Stars Award — 5x Recipient</div>
+        <div class="rec-side-org">Druva Inc. · FY22-FY26</div>
+      </div>
+      <div class="rec-side-item">
+        <div class="rec-side-name">Rank 1 - Computer Science</div>
+        <div class="rec-side-org">KSV University · Academic Excellence</div>
+      </div>
+      <div class="rec-side-item">
+        <div class="rec-side-name">City Mayor Honour — Top 1% of ~1 Million students</div>
+        <div class="rec-side-org">10th State Examinations · State Recognition</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom: three cells -->
+  <div class="rec-bottom rv d1">
+    <div class="rec-bottom-item">
+      <div class="rec-bottom-label">Scholarship</div>
+      <div class="rec-bottom-val">Mukhyamantri Yuva Swavlamban Yojna</div>
+      <div class="rec-bottom-sub">Government of Gujarat</div>
+    </div>
+    <div class="rec-bottom-item">
+      <div class="rec-bottom-label">Merit Award</div>
+      <div class="rec-bottom-val">LDRP-ITR Merit Scholarship</div>
+      <div class="rec-bottom-sub">LDRP Institute of Technology &amp; Research</div>
+    </div>
+    <div class="rec-bottom-item">
+      <div class="rec-bottom-label">Certified</div>
+      <div class="rec-bottom-val">Adobe AEM Sites Developer Professional</div>
+      <div class="rec-bottom-sub">Adobe Inc.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROJECTS ══ -->
+<section id="projects" class="section alt">
+  <div class="mag-header"><span class="mag-sname">Projects</span><span class="mag-pnum">7 / 9</span></div>
+  <div class="deco-letter" data-parallax="0.05">P</div>
+  <div class="section-heading rv"><span class="sub">Selected work</span>Built From<br>Scratch</div>
+  <div class="projects-grid">
+    <div class="proj-card rv">
+      <div class="proj-num">01</div>
+      <div class="proj-stack">Python · PyTorch · Openpose · Matlab</div>
+      <div class="proj-title">Sign Language Production</div>
+      <p class="proj-desc">I built the first end-to-end ASL Production model — a deep neural network generating multi-channel skeletal sign poses from English words. The project that still makes me most proud.</p>
+      <div class="proj-impact">BLEU-1: 31.4 · DTW: 78.69 · Dataset: WLASL</div>
+    </div>
+    <div class="proj-card rv d1">
+      <div class="proj-num">02</div>
+      <div class="proj-stack">Unity3D · C# · Python</div>
+      <div class="proj-title">Affective Horror Game Research</div>
+      <p class="proj-desc">I built a survival horror game that measured how players feel — tracking biometric and input data to study the relationship between difficulty and enjoyment.</p>
+      <div class="proj-impact">R = 0.747 correlation · 20 subjects · USC Research</div>
+    </div>
+    <div class="proj-card rv d2">
+      <div class="proj-num">03</div>
+      <div class="proj-stack">Angular · Node.js · Java Android · eBay API</div>
+      <div class="proj-title">eBay Search Web &amp; Android App</div>
+      <p class="proj-desc">A full-stack product search app I built end-to-end — web and Android — with filters, wishlist, social sharing, and seller details. Deployed to GCP.</p>
+      <div class="proj-impact">GCP deployed · Web &amp; Android · Social sharing</div>
+    </div>
+    <div class="proj-card rv">
+      <div class="proj-num">04</div>
+      <div class="proj-stack">Keras · InceptionV3 · Bi-LSTM · Python</div>
+      <div class="proj-title">Iksha — Vision Assistant</div>
+      <p class="proj-desc">I built a real-time surrounding description system for visually impaired users — InceptionV3 encoder, Bidirectional LSTM decoder, output to TTS engine.</p>
+      <div class="proj-impact">7.42s avg latency · Flickr30k · Ubuntu TTS</div>
+    </div>
+    <div class="proj-card rv d1">
+      <div class="proj-num">05</div>
+      <div class="proj-stack">AR/VR · Unity3D · Android</div>
+      <div class="proj-title">Tikiman Go — AR Game Features</div>
+      <p class="proj-desc">I designed the achievements module for a Hawaiian AR/VR game — building battle scenes and a Halloween seasonal pack for cross-platform Android builds.</p>
+      <div class="proj-impact">Multi-version Android · AR/VR · Game design</div>
+    </div>
+    <div class="proj-card rv d2">
+      <div class="proj-num">06</div>
+      <div class="proj-stack">PHP · MySQL · HTML · CSS · JS</div>
+      <div class="proj-title">ISRO Resource Distribution Portal</div>
+      <p class="proj-desc">A secure intranet portal I built for the Indian Space Research Organisation — managing resource reallocation for the remote sensing division.</p>
+      <div class="proj-impact">ISRO · Secure intranet · Remote sensing</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ writing ══ -->
+<section id="writing" class="section">
+  <div class="mag-header"><span class="mag-sname">Writing</span><span class="mag-pnum">8 / 9</span></div>
+  <div class="section-heading rv"><span class="sub">Essays &amp; thoughts</span>From the<br>Notebook</div>
+  <!-- Writing intro — statement + byline -->
+  <div class="writing-intro rv">
+    <div class="writing-statement">I write for the same reason I code — to think clearly, and leave something <em>behind that matters.</em></div>
+    <div class="writing-byline">Essays on engineering, accessibility, identity, and the things technology owes the people it overlooks. I write when I have something worth saying — not on a schedule.</div>
+  </div>
+
+  <!-- Drag carousel -->
+  <div class="writing-carousel-outer rv">
+    <!-- Left arrow -->
+    <button class="warrow disabled" id="wArrowL" aria-label="Previous">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+
+    <!-- Scrollable strip -->
+    <div class="writing-carousel-wrap" id="writingWrap">
+      <div class="writing-carousel" id="writingCarousel">
+
+      <a href="writing/landing-the-moon.html" class="wcard">
+        <div class="wcard-num">01</div>
+        <span class="wcard-tag">Career · Space · Engineering</span>
+        <div class="wcard-title">Landing the Moon: A Druvan's Experience Interning at ISRO</div>
+        <div class="wcard-desc">On working at ISRO during the Chandrayaan mission — and what it means to contribute to something larger than yourself.</div>
+        <span class="wcard-read">Read essay</span>
+      </a>
+
+      <a href="writing/deep-learning-accessibility.html" class="wcard">
+        <div class="wcard-num">02</div>
+        <span class="wcard-tag">AI · Accessibility · USC</span>
+        <div class="wcard-title">Deep Learning Meets Accessibility: Building Sign Language AI</div>
+        <div class="wcard-desc">How a team of four USC students built the first end-to-end 3D Sign Language Production model — and why the most important software lets more people participate in the world.</div>
+        <span class="wcard-read">Read essay</span>
+      </a>
+
+      <a href="writing/fast-fashion-identity.html" class="wcard">
+        <div class="wcard-num">03</div>
+        <span class="wcard-tag">Culture · Identity</span>
+        <div class="wcard-title">The Full Wardrobe, The Empty Self</div>
+        <div class="wcard-desc">Fast fashion isn't just an environmental crisis. It's an identity one — and the wardrobe that overflows is the one that slowly replaced a self.</div>
+        <span class="wcard-read">Read essay</span>
+      </a>
+
+      <a href="writing/aem-access-control.html" class="wcard">
+        <div class="wcard-num">04</div>
+        <span class="wcard-tag">Engineering · AEM</span>
+        <div class="wcard-title">Taming AEM Access Control</div>
+        <div class="wcard-desc">Everything I learned the hard way about restricting AEM authors in AEMaaCS with repoinit — so you don't have to rebuild it from scratch.</div>
+        <span class="wcard-read">Read essay</span>
+      </a>
+
+      <a href="writing/" class="wcard-more">
+        <div class="wcard-more-label">All writing →</div>
+        <div class="wcard-more-sub">I write when I have something worth saying. More essays in progress — visit the writing page.</div>
+      </a>
+
+      </div>
+    </div>
+
+    <button class="warrow" id="wArrowR" aria-label="Next">
+      <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+    </button>
+  </div>
+  <div class="writing-drag-hint rv">
+    <div class="writing-drag-icon"></div>
+    <span class="writing-drag-text">Drag to explore</span>
+  </div>
+
+  <div class="writing-footer rv">
+    <span class="writing-count">4 essays published · more in progress</span>
+    <a href="writing/" class="writing-all">Read all writing</a>
+  </div>
+</section>
+
+<div id="gallery-teaser">
+  <div class="gt-bg-word" id="gtBgWord">Art</div>
+  <div class="gt-lines"></div>
+
+  <div class="gt-left rv">
+    <div class="gt-eyebrow">Original Works · Paintings on Canvas</div>
+    <div class="gt-heading">The<br><em>Gallery</em></div>
+    <div class="gt-sub">When I'm not writing code, I'm writing in colour. A collection of original paintings is on its way — the other side of how I see the world.</div>
+    <div class="gt-coming">
+      <span class="gt-coming-dot"></span>
+      Coming Soon
+    </div>
+  </div>
+
+  <div class="gt-right rv d1">
+    <div class="gt-ring-outer">
+      <div class="gt-ring-mid">
+        <div class="gt-ring-inner">
+          <div class="gt-ring-text">Art &amp;<br>Canvas</div>
         </div>
-        <div class="product-item">
-            <h3>Stickers</h3>
-            <p>Putting my cricut to work.</p>
-            <img src="sticker.png" alt="Sticker" class="placeholder-img">
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="contact" class="section alt">
+  <div class="mag-header"><span class="mag-sname">Contact</span><span class="mag-pnum">9 / 9</span></div>
+  <div class="contact-grid">
+    <div class="rv">
+      <div class="contact-big">Let's build<br>something<br><em>real.</em></div>
+      <div class="contact-rows">
+        <div class="crow"><span class="crow-lbl">LinkedIn</span><span class="crow-val"><a href="https://linkedin.com/in/katha-shah" target="_blank">linkedin.com/in/katha-shah</a></span></div>
+        <div class="crow"><span class="crow-lbl">GitHub</span><span class="crow-val"><a href="https://github.com/katha-shah" target="_blank">github.com/katha-shah</a></span></div>
+        <div class="crow"><span class="crow-lbl">Location</span><span class="crow-val">Los Angeles / Bay Area, CA</span></div>
+      </div>
+    </div>
+    <div class="contact-div"></div>
+    <form class="contact-form rv d1" id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value="6cccc12a-cba3-4a7c-a62e-552c484eb912">
+      <input type="hidden" name="subject" value="New message from kathashah.com">
+      <input type="hidden" name="from_name" value="Katha Shah Portfolio">
+      <input type="checkbox" name="botcheck" style="display:none">
+
+      <div class="fg"><label>Your Name</label><input type="text" name="name" placeholder="First Last" required></div>
+      <div class="fg"><label>Email</label><input type="email" name="email" placeholder="you@company.com" required></div>
+      <div class="fg"><label>Message</label><textarea name="message" rows="5" placeholder="Say hello, ask a question, or just drop a note…" required></textarea></div>
+    
+      <div class="captcha-wrap">
+        <div class="captcha-label">Security check</div>
+        <div class="h-captcha" data-captcha="true" data-theme="light" data-size="normal"></div>
+        <div class="captcha-note">Helping keep this form spam-free.</div>
+      </div>
+
+      <button type="submit" class="f-submit" id="fsubmit">Send Message</button>
+
+      <div id="form-success" style="display:none;font-size:.78rem;color:var(--bark);margin-top:.8rem;font-style:italic">
+        Message sent — I'll be in touch soon.
+      </div>
+      <div id="form-error" style="display:none;font-size:.78rem;color:#a85c5c;margin-top:.8rem;font-style:italic">
+        Something went wrong. Please try emailing directly.
+      </div>
+    </form>
+
+    <!-- Already-sent state — shown instead of form if localStorage flag exists -->
+    <div id="form-already-sent" class="rv d1">
+      <div class="fas-hearts">
+        <span class="fas-heart">♥</span>
+        <span class="fas-heart">♥</span>
+        <span class="fas-heart">♥</span>
+      </div>
+      <div class="fas-envelope">
+        <div class="fas-envelope-body">
+          <div class="fas-envelope-flap"></div>
         </div>
-    </section>
+        <div class="fas-envelope-check"></div>
+      </div>
+      <div class="fas-title">Your message is<br>already on its way.</div>
+      <div class="fas-sub">I already have your note and I'll be in touch soon — promise.</div>
+      <div class="fas-note">Sent from this device · reply coming to your inbox</div>
+    </div>
 
-    <section id="contact" class="glass">
-        <h2>Contact</h2>
-        <p>If you'd like to get in touch, fill out the form below:</p>
-        <form id="contact-form">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" rows="4" required></textarea>
-            
-            <button type="submit">Send Message</button>
-        </form>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <footer>
-        <p>© 2024 Katha Shah. All rights reserved.</p>
-        <a href="#home" class="back-to-top">Back to Top</a>
-    </footer>
+<footer>
+  <span class="f-name">Katha Shah</span>
+  <span class="f-copy">© 2026 · Built with craft &amp; code</span>
+</footer>
 
-    <script>
-        document.querySelector('#contact-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            alert('Thank you for your message! I will get back to you soon.');
-            this.reset();
-        });
+<!-- LOVE BUZZER -->
+<div id="lb">
+  <button class="lbtn" id="lbtn">
+    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+  </button>
+  <div class="lct" id="lct">111 loves</div>
+</div>
 
-        // Smooth scroll behavior
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="js/portfolio-core.js"></script>
+<script src="js/portfolio-writing.js"></script>
+<script src="js/portfolio-love.js"></script>
+<!-- Web3Forms + hCaptcha script -->
+<script src="https://web3forms.com/client/script.js" async defer></script>
 </body>
 </html>

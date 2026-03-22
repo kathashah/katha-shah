@@ -1,0 +1,295 @@
+/* ── WRITING SECTION — drag carousel layout ── */
+.writing-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 6rem;
+    align-items: end;
+    margin-bottom: 4rem
+}
+
+.writing-statement {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 2.8vw, 2.6rem);
+    line-height: 1.15;
+    color: var(--espresso)
+}
+
+.writing-statement em {
+    color: var(--rose);
+    font-style: normal
+}
+
+.writing-byline {
+    font-size: .85rem;
+    line-height: 1.9;
+    color: var(--bark);
+    font-weight: 300;
+    align-self: end
+}
+
+/* Drag carousel */
+.writing-carousel-wrap {
+    border-top: 2px solid var(--espresso);
+    overflow-x: scroll;
+    overflow-y: hidden;
+    position: relative;
+    cursor: grab;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none
+}
+
+.writing-carousel-wrap:active {
+    cursor: grabbing
+}
+
+.writing-carousel-wrap::-webkit-scrollbar {
+    display: none
+}
+
+.writing-carousel {
+    display: flex;
+    width: max-content;
+    user-select: none;
+    -webkit-user-select: none;
+    align-items: stretch;
+    background: var(--linen)
+}
+
+.wcard {
+    width: clamp(280px, 55vw, 560px);
+    flex-shrink: 0;
+    padding: 2.8rem 3rem;
+    border-right: 1px solid var(--linen-4);
+    text-decoration: none;
+    transition: background .25s;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-self: stretch;
+    background: var(--linen)
+}
+
+.wcard:hover {
+    background: var(--rose-faint)
+}
+
+.wcard:hover .wcard-title {
+    color: var(--rose)
+}
+
+.wcard-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    color: rgba(196, 144, 122, .07);
+    line-height: 1;
+    margin-bottom: .8rem;
+    letter-spacing: -.03em
+}
+
+.wcard-tag {
+    font-size: .5rem;
+    font-weight: 500;
+    letter-spacing: .35em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 1.1rem;
+    display: block
+}
+
+.wcard-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.18rem;
+    line-height: 1.25;
+    color: var(--espresso);
+    margin-bottom: 1.1rem;
+    transition: color .2s
+}
+
+.wcard-desc {
+    font-size: .82rem;
+    font-weight: 300;
+    color: var(--bark);
+    line-height: 1.8
+}
+
+.wcard-read {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    margin-top: 1.8rem;
+    font-size: .54rem;
+    font-weight: 500;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--rose);
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity .2s, transform .2s
+}
+
+.wcard:hover .wcard-read {
+    opacity: 1;
+    transform: translateY(0)
+}
+
+.wcard-read::after {
+    content: '→'
+}
+
+/* More card — half-width so it peeks at 2.5 cards */
+.wcard-more {
+    width: clamp(200px, 28vw, 320px);
+    flex-shrink: 0;
+    padding: 2.8rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-decoration: none;
+    background: var(--rose-faint);
+    border-right: none;
+    align-self: stretch
+}
+
+.wcard-more:hover .wcard-more-label {
+    letter-spacing: .35em
+}
+
+.wcard-more-label {
+    font-size: .6rem;
+    font-weight: 500;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: .8rem;
+    transition: letter-spacing .2s
+}
+
+.wcard-more-sub {
+    font-size: .75rem;
+    font-weight: 300;
+    color: var(--stone);
+    line-height: 1.6;
+    font-style: italic
+}
+
+/* Carousel outer wrapper with flanking arrows */
+.writing-carousel-outer {
+    display: grid;
+    grid-template-columns: 0px 1fr 36px;
+    gap: 0 1rem;
+    align-items: center
+}
+
+.warrow {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--linen);
+    border: 1px solid var(--linen-4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: none;
+    transition: all .2s;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(30, 18, 8, .06)
+}
+
+.warrow svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--espresso);
+    stroke-width: 1.5;
+    fill: none;
+    transition: stroke .2s
+}
+
+.warrow:hover {
+    border-color: var(--rose);
+    background: var(--rose)
+}
+
+.warrow:hover svg {
+    stroke: var(--linen)
+}
+
+.warrow.disabled {
+    opacity: .2;
+    pointer-events: none
+}
+
+/* Drag hint */
+.writing-drag-hint {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding-top: 1.2rem;
+    padding-bottom: .2rem
+}
+
+.writing-drag-icon {
+    width: 28px;
+    height: 14px;
+    border: 1px solid var(--stone-lt);
+    border-radius: 20px;
+    position: relative;
+    flex-shrink: 0
+}
+
+.writing-drag-icon::before {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--rose);
+    top: 50%;
+    left: 4px;
+    transform: translateY(-50%)
+}
+
+.writing-drag-text {
+    font-size: .52rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--stone-lt)
+}
+
+/* Bottom footer */
+.writing-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.8rem;
+    border-top: 1px solid var(--linen-4)
+}
+
+.writing-count {
+    font-family: 'DM Mono', monospace;
+    font-size: .55rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--stone-lt)
+}
+
+.writing-all {
+    font-size: .58rem;
+    font-weight: 500;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: var(--rose);
+    text-decoration: none;
+    transition: letter-spacing .2s
+}
+
+.writing-all:hover {
+    letter-spacing: .35em
+}
+
+.writing-all::after {
+    content: ' →'
+}

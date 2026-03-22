@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deep Learning Meets Accessibility — Katha Shah</title>
+<meta name="description" content="How a team of four USC students built the first end-to-end 3D Sign Language Production model using Progressive Transformers and GANs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/writing-base.css">
+<link rel="stylesheet" href="css/writing-essay.css">
+<link rel="stylesheet" href="css/writing-asl.css">
+</head>
+<body>
+<div id="cd"></div>
+<div id="cr"></div>
+<div id="progress"></div>
+
+<nav class="w-nav" id="w-nav">
+  <a href="index.html" class="w-nav-back">All Writing</a>
+  <a href="../" class="w-nav-logo">KS</a>
+  <span class="w-nav-issue">Writing · No. 002</span>
+</nav>
+
+<header class="essay-header">
+  <div class="essay-bar">
+    <span class="essay-pub">Katha Shah — Writing</span>
+    <span class="essay-num">Essay No. 002 · March 2025</span>
+  </div>
+  <div class="essay-kicker">AI · Accessibility · Deep Learning · USC</div>
+  <h1 class="essay-title">Deep Learning Meets<br>Accessibility: Building<br><em>Sign Language AI</em></h1>
+  <div class="essay-byline">
+    <span class="byline-author">By <strong>Katha Shah</strong><span class="byline-dot"></span>Senior Software Engineer, Druva</span>
+    <span class="byline-date">March 2025</span>
+    <span class="byline-read">9 min read</span>
+  </div>
+</header>
+
+<main class="essay-body">
+
+  <blockquote class="pull-quote full" style="margin-top:0">
+    Blindness cuts us off from things, but deafness cuts us off from people.
+    <cite>— Helen Keller, American deaf-blind educator</cite>
+  </blockquote>
+
+  <div>
+    <p class="essay-p drop">That quote sat on the first slide of our presentation. We put it there because it said in one sentence what we were trying to solve in an entire research project — and because it reminded us, every time we looked at it, exactly who we were building for.</p>
+    <p class="essay-p">It was 2020. A deep learning class at the University of Southern California. Four of us — a small team who shared the belief that the most interesting problems in AI weren't the ones everyone was already racing toward. We wanted to build something for people who were being left behind by the technology boom.</p>
+    <p class="essay-p">We chose Sign Language Production. Not recognition — that had been explored. Production. The reverse direction: taking a word in English and automatically generating the sign language for it. Word in. 3D skeleton out.</p>
+    <h2 class="essay-h2">The Gap Nobody Had Filled</h2>
+    <p class="essay-p">The research landscape had a strange asymmetry. Sign Language Recognition — teaching a computer to understand signing from video — had received real attention. Production, the reverse direction, was almost entirely unexplored at the end-to-end level.</p>
+    <p class="essay-p">What that means practically: technology could help hearing people understand someone who was deaf. But it couldn't bridge the gap the other way. A truly accessible system needs to go both directions. We decided to try building one.</p>
+  </div>
+
+  <div>
+    <h2 class="essay-h2">Why It Was Hard</h2>
+    <p class="essay-p">Sign language is not a simplified spoken language. It uses every part of the body simultaneously — upper body motion, hand shape and trajectory, and facial expressions. Miss any channel and the meaning changes or disappears entirely.</p>
+    <p class="essay-p">That multi-channel complexity is what makes it genuinely difficult for a neural network. You're not generating a sequence of words. You're generating a continuous stream of 3D skeletal poses — joint coordinates across the torso, arms, hands, and face — all moving together in a way a real human signer would recognise as correct.</p>
+    <p class="essay-p">No one had built a fully end-to-end system that could do this. We were building into a gap with no established baseline, no prior model to build on, and a lot of open questions about whether it was even solvable.</p>
+    <h2 class="essay-h2">Word to Skeleton</h2>
+    <p class="essay-p">The core idea: give the system a word — say, "thank you" — and it outputs a stream of 3D skeletal pose frames showing exactly how to sign it in ASL. Upper body, arms, hands, face — all encoded as 3D joint coordinates, frame by frame. String the frames together and you have a fluid, animated sign.</p>
+  </div>
+
+  <!-- Full-width pipeline diagram -->
+  <div class="pipeline-diagram full rv">
+    <div class="pd-label">3D Sign Language Production — Full Pipeline</div>
+    <div class="pd-flow">
+      <div class="pd-step">
+        <div class="pd-box accent"><div class="pd-title">English Word</div><div class="pd-sub">"thank you"</div></div>
+        <div class="pd-foot">Input</div>
+      </div>
+      <div class="pd-arrow">→</div>
+      <div class="pd-step">
+        <div class="pd-box"><div class="pd-title">WLASL Dataset</div><div class="pd-sub">2,000 common ASL words · video corpus</div></div>
+        <div class="pd-foot">Training data</div>
+      </div>
+      <div class="pd-arrow">→</div>
+      <div class="pd-step">
+        <div class="pd-box"><div class="pd-title">OpenPose</div><div class="pd-sub">Video → 2D skeletons · face, torso, hands</div></div>
+        <div class="pd-foot">Preprocessing</div>
+      </div>
+      <div class="pd-arrow">→</div>
+      <div class="pd-step">
+        <div class="pd-box"><div class="pd-title">Z-Estimation</div><div class="pd-sub">Iterative backprop · 2D → 3D lift</div></div>
+        <div class="pd-foot">3D conversion</div>
+      </div>
+      <div class="pd-arrow">→</div>
+      <div class="pd-step">
+        <div class="pd-box"><div class="pd-title">Progressive Transformer + GAN</div><div class="pd-sub">Generator + Conditional Discriminator</div></div>
+        <div class="pd-foot">Model</div>
+      </div>
+      <div class="pd-arrow">→</div>
+      <div class="pd-step">
+        <div class="pd-box accent"><div class="pd-title">3D Pose Sequence</div><div class="pd-sub">N frames · joint coordinates · animated sign</div></div>
+        <div class="pd-foot">Output</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Text left, image right — inline paired layout -->
+  <div class="rv">
+    <h2 class="essay-h2">Turning Video Into Data</h2>
+    <p class="essay-p">Before training anything, we had to turn raw sign language videos into something a neural network could learn from. We used the WLASL dataset — the largest Word-Level ASL video corpus available, covering 2,000 common words signed by multiple signers.</p>
+    <p class="essay-p">Preprocessing had two stages. First, OpenPose extracted 2D skeleton keypoints from every video frame — detecting face, torso, and hand positions as 2D coordinate data. Then a Z-estimation algorithm — an iterative backpropagation-based approach — estimated the depth axis, lifting those 2D skeletons into full 3D space.</p>
+    <p class="essay-p">That 3D conversion mattered enormously. A flat 2D skeleton loses depth information that changes the meaning of a sign. Getting the z-axis right was one of the most technically demanding parts of the entire project.</p>
+  </div>
+
+  <!-- Image as right column companion -->
+  <figure class="essay-figure-inline rv d1">
+    <img src="images/openpose_editorial.png" alt="OpenPose skeleton detection and Z-estimation 3D conversion">
+    <figcaption>
+      OpenPose detects face, torso &amp; hand keypoints (top). Z-estimation converts 2D to 3D (bottom).
+      <span>Figure 1 · USC · 2020–21</span>
+    </figcaption>
+  </figure>
+
+  <!-- Architecture — full width text -->
+  <div class="full rv">
+    <h2 class="essay-h2" style="border-top:1px solid var(--linen-4);padding-top:1.2rem;margin-top:2rem">The Architecture — Two Components</h2>
+    <p class="essay-p">We built a GAN-based system: a Generator and a Conditional Adversarial Discriminator working in tension with each other.</p>
+    <p class="essay-p">The Generator used a Progressive Transformer — an encoder-decoder architecture with Counter Embedding and Continuous Embedding layers — to produce sign pose sequences frame by frame. The Counter Embedding tracked position progressively; the Continuous Embedding conditioned each new frame on the previous pose.</p>
+    <p class="essay-p">The Discriminator was conditioned on the input word — meaning it judged not just whether a pose sequence looked realistic, but whether it was the correct sign for that specific word. The training signal combined MSE loss from the Generator with adversarial loss from the Discriminator.</p>
+  </div>
+
+  <!-- Architecture diagram -->
+  <div class="arch-diagram full rv">
+    <div class="ad-label">GAN Architecture — Generator vs Discriminator</div>
+    <div class="ad-grid">
+      <div>
+        <div class="ad-col-title">Generator — Progressive Transformer</div>
+        <div class="ad-item rose"><div class="ad-dot"></div><div><div class="ad-name">Input Embedding</div><div class="ad-desc">Text / Gloss word encoding</div></div></div>
+        <div class="ad-item"><div class="ad-dot dim"></div><div><div class="ad-name">Counter Embedding</div><div class="ad-desc">Progressive frame position tracking</div></div></div>
+        <div class="ad-item"><div class="ad-dot dim"></div><div><div class="ad-name">Continuous Embedding</div><div class="ad-desc">Previous pose conditioning</div></div></div>
+        <div class="ad-item"><div class="ad-dot dim"></div><div><div class="ad-name">Masked Multi-Head Attention</div><div class="ad-desc">+ Feed Forward × N layers</div></div></div>
+        <div class="ad-item rose"><div class="ad-dot"></div><div><div class="ad-name">Produced Sign Pose Sequence</div><div class="ad-desc">ŷ₀ … ŷᵤ — N 3D skeleton frames</div></div></div>
+        <div style="margin-top:.8rem;text-align:center"><div class="ad-loss">↑ MSE Loss</div></div>
+      </div>
+      <div class="ad-mid">
+        <div class="ad-vs">vs</div>
+        <div style="flex:1;width:1px;background:var(--linen-4);min-height:80px"></div>
+        <div class="ad-loss dim" style="writing-mode:vertical-lr;transform:rotate(180deg);font-size:.48rem;letter-spacing:.1em">Adversarial Loss</div>
+      </div>
+      <div>
+        <div class="ad-col-title">Discriminator — Conditioned on Word</div>
+        <div class="ad-item dark"><div class="ad-dot"></div><div><div class="ad-name lt">Ground Truth Pose Sequence</div><div class="ad-desc lt">y₀ … yᵤ — real signer frames</div></div></div>
+        <div class="ad-item dark"><div class="ad-dot dim"></div><div><div class="ad-name lt">Word Conditioning</div><div class="ad-desc lt">Discriminator knows the input word</div></div></div>
+        <div class="ad-item dark"><div class="ad-dot dim"></div><div><div class="ad-name lt">Real / Fake Judgement</div><div class="ad-desc lt">Is this the correct sign for this word?</div></div></div>
+        <div style="margin-top:1rem;padding:1rem;background:rgba(196,144,122,.07);border:1px solid rgba(196,144,122,.2)">
+          <div style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--stone);line-height:1.65">The discriminator being conditioned on the specific word — not just pose quality — is what forces the generator toward semantic correctness, not just visual realism.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h2 class="essay-h2">Three Experiments</h2>
+    <p class="essay-p">We ran three experiments to understand what was actually contributing to performance. The first used the Progressive Transformer alone — no adversarial component, just the sequence generator trained with MSE loss. The second added the conditional GAN discriminator. The third added noise injection during training to improve robustness.</p>
+    <p class="essay-p">Comparing all three gave us real insight. The GAN component made the most meaningful difference to output quality. The noise experiment pushed the metrics further, giving us our best results.</p>
+  </div>
+
+  <div>
+    <h2 class="essay-h2">The Numbers</h2>
+    <p class="essay-p">We evaluated using BLEU-1 — borrowed from machine translation, measuring how closely generated sequences match ground truth — and Dynamic Time Warping (DTW), measuring geometric similarity between generated and real pose sequences across time.</p>
+    <p class="essay-p">Our best configuration achieved BLEU-1 of 31.4 and DTW of 78.69. Strong results for a problem with no prior baseline — because no one had solved it before. More importantly, we had proved the problem was solvable at all. The door was open.</p>
+  </div>
+
+  <!-- Experiments comparison table -->
+  <div class="exp-table full rv">
+    <div class="exp-row hd">
+      <div class="exp-cell">Configuration</div>
+      <div class="exp-cell">Description</div>
+      <div class="exp-cell">BLEU-1 ↑</div>
+      <div class="exp-cell">DTW ↑</div>
+    </div>
+    <div class="exp-row">
+      <div class="exp-cell">Transformer only</div>
+      <div class="exp-cell">Progressive Transformer, MSE loss, no adversarial component</div>
+      <div class="exp-cell">Baseline</div>
+      <div class="exp-cell">Baseline</div>
+    </div>
+    <div class="exp-row">
+      <div class="exp-cell hi">+ GAN</div>
+      <div class="exp-cell">Conditional adversarial discriminator added, word-conditioned</div>
+      <div class="exp-cell hi">Improved</div>
+      <div class="exp-cell hi">Improved</div>
+    </div>
+    <div class="exp-row">
+      <div class="exp-cell hi best">+ Noise · Best</div>
+      <div class="exp-cell best">Noise injection during training for robustness</div>
+      <div class="exp-cell hi best">31.4</div>
+      <div class="exp-cell hi best">78.69</div>
+    </div>
+  </div>
+
+  <blockquote class="pull-quote full rv">
+    We weren't just training a model. We were asking a neural network to learn the grammar of a language spoken entirely through the body.
+  </blockquote>
+
+  <div>
+    <h2 class="essay-h2">The Work That Came After</h2>
+    <p class="essay-p">Our model was preliminary — we were honest about that in the presentation. We had proved the concept and established a first baseline for a problem nobody had solved. But the research didn't stop when the class ended.</p>
+    <p class="essay-p">My teammates carried it forward. They extended the architecture, improved the training pipeline, and pushed the work further than we'd taken it together in the class. That's how good research works — one team opens the door, the next team walks further through it. I'm glad we were the ones who found it first.</p>
+  </div>
+
+  <div>
+    <h2 class="essay-h2">Why This Kind of Work Matters</h2>
+    <p class="essay-p">There are roughly 70 million deaf people in the world. Most navigate a world built almost entirely for people who hear. The technology industry has poured extraordinary resources into problems already well-served — and comparatively little into problems that affect people without economic power to demand attention.</p>
+    <p class="essay-p">Building this project changed how I think about what engineering is for. The memory of building something for people who genuinely needed it — not just wanted a faster checkout — stays with me in a different way than any other work I've done.</p>
+  </div>
+
+  <div class="team-box full rv">
+    <div class="team-box-label">On the team</div>
+    <p class="team-box-text">This project was built by four graduate students at USC as part of our deep learning coursework — every architectural decision, every training run, every late-night debugging session was shared. My teammates continued extending this research beyond the class project. The work, and the credit, belongs to all of us.</p>
+  </div>
+
+  <div>
+    <h2 class="essay-h2">What It Left Behind</h2>
+    <p class="essay-p">Helen Keller's words have stayed with me since I first put them on that slide. Deafness is invisible to most of us. We don't notice the barrier because we've never needed to cross it.</p>
+    <p class="essay-p">I build right, for the right reasons, every time. That principle didn't come from nowhere. It came from a USC classroom, a team of four, and a quote about deafness cutting people off from each other — and the conviction that it didn't have to.</p>
+    <p class="essay-caption">The 3D Sign Language Production model was built 2020–21 at USC. Research extended by teammates post-course. WLASL dataset courtesy of the USC Information Sciences Institute. Architecture based on Progressive Transformers for Sign Language Production (Saunders et al.).</p>
+  </div>
+
+  <div>
+    <h2 class="essay-h2">A Note on Accessibility in AI</h2>
+    <p class="essay-p">AI has the power to lower barriers that most people don't even know exist — but only if the people building it choose to look. The most important software we can build is software that lets more people participate in the world.</p>
+    <p class="essay-p">I'm not suggesting every engineer has to pivot to accessibility research. But I do think we should be honest about where our attention goes and why. The hardest problems are not always the most visible ones. And sometimes the most meaningful thing you can build is the thing nobody else thought to build first.</p>
+  </div>
+
+  <blockquote class="pull-quote full rv">
+    The most important software we can build is software that lets more people participate in the world.
+  </blockquote>
+
+</main>
+
+<footer class="essay-footer">
+  <div class="rv">
+    <div class="ef-label">About the author</div>
+    <p class="ef-text">Katha is a Senior Software Engineer at Druva and a USC CS graduate. She builds production web systems by day and thinks about what technology owes the people it overlooks the rest of the time.</p>
+    <div class="ef-name">Katha Shah</div>
+    <div class="ef-role">Senior Software Engineer · Druva Inc.</div>
+  </div>
+  <div class="ef-div"></div>
+  <div class="rv d1">
+    <div class="ef-label">More writing</div>
+    <a href="landing-the-moon.html" class="ef-link"><span class="ef-link-t">Landing the Moon: Interning at ISRO</span><span class="ef-link-d">Sep 2023</span></a>
+    <a href="fast-fashion-identity.html" class="ef-link"><span class="ef-link-t">The Full Wardrobe, The Empty Self</span><span class="ef-link-d">2025</span></a>
+    <a href="aem-access-control.html" class="ef-link"><span class="ef-link-t">Taming AEM Access Control</span><span class="ef-link-d">2025</span></a>
+  </div>
+</footer>
+
+<footer class="w-footer">
+  <span class="w-footer-name">Katha Shah</span>
+  <a href="index.html" class="w-footer-back">← All Writing</a>
+</footer>
+
+<script src="js/writing-base.js"></script>
+</body>
+</html>

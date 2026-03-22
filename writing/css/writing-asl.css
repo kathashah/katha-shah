@@ -1,0 +1,164 @@
+/* ============================================================
+   writing-asl.css
+   Styles specific to deep-learning-accessibility.html only
+   Pipeline diagram · Architecture diagram · Experiments table
+   ============================================================ */
+
+/* ── PIPELINE DIAGRAM ── */
+.pipeline-diagram {
+  grid-column: 1 / -1;
+  background: var(--espresso);
+  padding: 2.5rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+.pd-label {
+  font-family: 'DM Mono', monospace;
+  font-size: .52rem; letter-spacing: .25em;
+  text-transform: uppercase; color: var(--rose);
+  margin-bottom: 1.8rem; opacity: .8;
+}
+.pd-flow {
+  display: flex; align-items: stretch;
+  gap: 0; flex-wrap: nowrap; min-width: 580px;
+}
+.pd-step {
+  display: flex; flex-direction: column;
+  align-items: center; gap: .4rem; flex: 1;
+}
+.pd-box {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  padding: .7rem .8rem; text-align: center;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.pd-box.accent {
+  border-color: rgba(196,144,122,.55);
+  background: rgba(196,144,122,.12);
+}
+.pd-title {
+  font-family: 'DM Mono', monospace;
+  font-size: .6rem; color: rgba(250,250,247,.88);
+  letter-spacing: .04em; line-height: 1.35;
+}
+.pd-sub {
+  font-size: .52rem; color: rgba(250,250,247,.38);
+  margin-top: .2rem;
+  font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.35;
+}
+.pd-arrow {
+  color: var(--rose); font-size: 1rem; opacity: .6;
+  flex-shrink: 0; padding: 0 .2rem;
+  display: flex; align-items: center;
+}
+.pd-foot {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: .52rem; font-weight: 300;
+  color: rgba(250,250,247,.28);
+  text-align: center; margin-top: .35rem;
+}
+
+/* ── ARCHITECTURE DIAGRAM ── */
+.arch-diagram {
+  grid-column: 1 / -1;
+  background: var(--linen-3);
+  border: 1px solid var(--linen-4);
+  padding: 2.5rem; margin: 1.5rem 0;
+}
+.ad-label {
+  font-family: 'DM Mono', monospace;
+  font-size: .52rem; letter-spacing: .25em;
+  text-transform: uppercase; color: var(--rose);
+  margin-bottom: 2rem; opacity: .8;
+}
+.ad-grid {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  gap: 1.5rem; align-items: start;
+}
+.ad-col-title {
+  font-size: .52rem; font-weight: 600;
+  letter-spacing: .3em; text-transform: uppercase;
+  color: var(--stone); margin-bottom: .8rem;
+  padding-bottom: .5rem; border-bottom: 1px solid var(--linen-4);
+}
+.ad-item {
+  display: flex; align-items: flex-start;
+  gap: .7rem; padding: .7rem 1rem; margin-bottom: .5rem;
+  border: 1px solid var(--linen-4); background: var(--linen);
+}
+.ad-item.rose { border-left: 3px solid var(--rose); background: var(--rose-faint) }
+.ad-item.dark { background: var(--espresso); border-color: transparent }
+.ad-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--rose); flex-shrink: 0; margin-top: .35rem;
+}
+.ad-dot.dim { background: var(--stone-lt) }
+.ad-name {
+  font-family: 'DM Mono', monospace;
+  font-size: .62rem; color: var(--espresso);
+  letter-spacing: .03em; line-height: 1.3;
+}
+.ad-name.lt { color: rgba(250,250,247,.85) }
+.ad-desc {
+  font-size: .58rem; color: var(--stone);
+  margin-top: .15rem;
+  font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.4;
+}
+.ad-desc.lt { color: rgba(250,250,247,.38) }
+.ad-mid {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: .8rem; padding-top: 2rem;
+}
+.ad-vs {
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: 1.1rem; color: var(--stone-lt);
+}
+.ad-loss {
+  font-family: 'DM Mono', monospace;
+  font-size: .52rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--rose); text-align: center;
+}
+.ad-loss.dim { color: var(--stone) }
+
+/* ── EXPERIMENTS TABLE ── */
+.exp-table {
+  grid-column: 1 / -1;
+  margin: 1.5rem 0;
+  border: 1px solid var(--linen-4);
+  overflow: hidden;
+}
+.exp-row {
+  display: grid;
+  grid-template-columns: 150px 1fr 100px 100px;
+  border-bottom: 1px solid var(--linen-4);
+}
+.exp-row:last-child { border-bottom: none }
+.exp-row.hd { background: var(--espresso) }
+.exp-cell {
+  padding: .85rem 1.2rem;
+  font-family: 'DM Mono', monospace;
+  font-size: .68rem; color: var(--bark);
+  border-right: 1px solid var(--linen-4);
+  line-height: 1.45;
+}
+.exp-cell:last-child { border-right: none }
+.exp-row.hd .exp-cell {
+  color: rgba(250,250,247,.45);
+  font-size: .52rem; letter-spacing: .15em; text-transform: uppercase;
+}
+.exp-cell.hi   { color: var(--rose) }
+.exp-cell.best { background: var(--rose-faint) }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .ad-grid { grid-template-columns: 1fr }
+  .ad-mid { flex-direction: row; padding-top: 0 }
+  .exp-row { grid-template-columns: 1fr 1fr }
+  .exp-cell:nth-child(3),
+  .exp-cell:nth-child(4),
+  .exp-row.hd .exp-cell:nth-child(3),
+  .exp-row.hd .exp-cell:nth-child(4) { display: none }
+}
